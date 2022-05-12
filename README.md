@@ -32,12 +32,12 @@ Ajan säästämiseksi varmista, että sinulla on saatavilla seuraavat asiat enne
 
  * Määrittele Suomen aikavyöhyke: _Region Settings_ > _Date & Time_ > _Time zone: (UTC+02:00) Helsinki, ..._ Älä muuta päivämäärän tai kellonajan esitysmuotoa.
 
- * Jos kone luodaan suljettuun ympäristöön (esim. labraan) ja koneessa on paikallinen pääkäyttäjä, niin luo koneelle myös tavallinen käyttäjä, jossa Compass-ohjelmaa käytetään. Labraympäristössä pääkäyttäjäksi luotiin Pääjehu ja tavalliseksi käyttäjäksi Kokelas. Kokelas-käyttäjälle ei määritelty salasanaa.
+ * Jos kone luodaan suljettuun ympäristöön (esim. labraan) ja koneessa on paikallinen pääkäyttäjä, niin luo koneelle myös tavallinen käyttäjä, jossa Compass-ohjelmaa käytetään. Labraympäristössä pääkäyttäjäksi luotiin *Pääjehu* ja tavalliseksi käyttäjäksi *Kokelas*. Kokelas-käyttäjälle ei määritelty salasanaa.
 
  * Koneen nimi kannattaa nimetä järkevästi ja niin, että työasema on tunnistettavissa, esimerkiksi _HAYO-LABRA18-1_. Koneen nimi näkyy testien suorituslistoissa.
 
  * Koneen verkkoasetukset:
-    - HAYO:n labrassa käytössä staattiset verkko-osoitteet, myös DHCP-asetukset toimivat. Helpointa, jos serveri on staattisilla asetuksilla.
+    - HAYO:n labrassa käytetään staattisia verkko-osoitteita (myös DHCP-asetukset toimivat). Helpointa on, jos serveri on staattisilla asetuksilla.
     - Esimerkkinä labran verkkoasetukset:
       - IP-osoite: 10.84.0.70 (server) ja 10.84.0.71-74 (clientit)
       - Subnet mask: 255.255.255.0
@@ -45,7 +45,7 @@ Ajan säästämiseksi varmista, että sinulla on saatavilla seuraavat asiat enne
       - DNS: 10.84.0.4
     - Palomuuriasetuksiin ei tarvitse tehdä muutoksia, paitsi palvelimen osalta (tästä tarkemmat ohjeet myöhemmin).
 
- * Acrobat Reader, asenna englanninkielinen versio (https://get.adobe.com/reader).
+ * Acrobat Reader, asenna englanninkielinen versio (https://get.adobe.com/reader). Älä asenna mitään ehdotettuja kylkiäisiä.
 
  * Koneessa pitää olla tulostin, Microsoft XPS Document Printer riittää.
 
@@ -55,12 +55,29 @@ Ajan säästämiseksi varmista, että sinulla on saatavilla seuraavat asiat enne
      - Kirjaudu portal.office.com-ympäristöön omilla tunnuksillasi.
      - Valitse Asenna Office > Muut asennusasetukset > Näytä sovellukset ja laitteet.
      - Valitse kieleksi _English (United States)_, versioksi _64-bittinen_ ja klikkaa Asenna Office.
-     - Asenna Office suoritamalla ladattu tiedosto.
+     - Asenna Office suorittamalla ladattu tiedosto.
 
  * Määrittele Officen versio Compassin kanssa toimivaksi.
-     - Löydät lisätietoa dokumentista https://certiport.pearsonvue.com/Support/PDFs/QRG-Office-365-FAQ.pdf.
-     - Käynnistä komentorivi pääkäyttäjän oikeuksilla.
-     - Syötä komentoriville sitä Office-versiota vastaavat komennot, johon haluat O365-version lukita. Komennot löydät dokumentista https://certiport.pearsonvue.com/Support/PDFs/MOS-365-Versioning-Three.pdf.
+     
+     - Käynnistä komentorivi *pääkäyttäjän* oikeuksilla.
+     - Lukitse O365 päivittymään Semi-Annual Enterprise -kanavan mukaisesti, jolloin päivitykset tulevat kaksi kertaa vuodessa. Tämä tapahtuu antamalla seuraavat komennot komentoriville:
+       ```
+       cd /d “C:\Program Files\Common Files\Microsoft Shared\ClickToRun”
+       OfficeC2RClient.exe /changesetting Channel=Deferred
+       OfficeC2RClient.exe /update USER displaylevel=true forceappshutdown=true updatepromptuser=false
+       ``` 
+     - Jos O365-ohjelmat eivät toimi MOS-testien kanssa, niin silloin kannattaa tehdä pakotettu asennus 1902-julkaisun viimeisimpään versioon komennoilla:
+       ```
+       cd /d “C:\Program Files\Common Files\Microsoft Shared\ClickToRun”
+       OfficeC2RClient.exe /changesetting Channel=Deferred
+       OfficeC2RClient.exe /update USER displaylevel=true forceappshutdown=true updatepromptuser=false updatetoversion=16.0.11328.20438
+       ``` 
+       Huomaa, että Access-testi ei toimi tämän version kanssa.
+     - Voit varmistaa O365-ohjelmien version *File* > *Account* -näkymästä. Versio näkyy *About Word* -otsakkeen alta.
+     - Lisätietoa O365-testien versioista löytyy seuraavista dokumenteista:
+        - https://certiport.pearsonvue.com/Support/PDFs/QRG-Office-365-FAQ.pdf
+        - https://certiport.pearsonvue.com/Support/PDFs/MOS-365-Versioning-Three.pdf
+     - Jos O365-testit tuottavat ongelmia, niin kannattaa tarkistaa myös Certiportin FAQ-osio.
 
  * Avaa jokainen testattava sovellus (Word, Excel, PowerPoint ja Access) niin pitkälle, että pääset tyhjään työpohjaan, johon voisi lähteä tekemään omia lisäyksiä. Tämä varmistaa sen, että nämä ohjelmat eivät kysele mitään ylimääräisiä aloitukseen liittyviä asioita testin alussa. Tämä läpikäynti kannattaa tehdä myös aika ajoin.
 
@@ -93,8 +110,8 @@ Ajan säästämiseksi varmista, että sinulla on saatavilla seuraavat asiat enne
  
  * Lataa testikeskuksessa tarjottavat testit:
     - Mene kohtaan _Manage Exams_ ja valitse _Download Additional Exams_
-    - Valitse ladattavat testit. Huomaa, että Microsoft Office Specialist -kategorian alla on useamman Office version testit, selkeyden vuoksi kannattaa valita ainoastaan uusimman version testit.
-    - Valitse _Download Exams_ ja odota testien lataaminen.
+    - Valitse ladattavat testit. Huomaa, että Microsoft Office Specialist -kategorian alla on useamman Office version testit, selkeyden vuoksi kannattaa valita ainoastaan uusimman version testit. Huomaa myös, että osaa testeistä, kuten esimerkiksi Microsoft Certified Fundamentals -testejä, ei tavitse ladata.
+    - Valitse _Download Exams_ ja odota testien latautuminen.
 
  * Avaa portti palomuuriin:
     - Avaa Windows _Defender Firewall_ ja sieltä _Advanced Settings_.
@@ -121,7 +138,7 @@ Ajan säästämiseksi varmista, että sinulla on saatavilla seuraavat asiat enne
 
  * Tarkista, että asennettu Office on yhteensopiva Compass-sovelluksen kanssa menemällä kohtaan _Office Compatibility_. Ruudun tiedot kertovat, mikä versio Officesta on asennettu ja onko se yhteensopiva.
 
- * Tarkista LITA-testien (Live-in-the-application)toiminta:
+ * Tarkista LITA-testien (Live-in-the-application) toiminta:
     - Mene kohtaan _Manage Exams_
     - Suorita _Launch Config Exam_ kunkin Office-ohjelman osalta.
     - Config-testien tarkoituksena on testata, että Compass saa avattua testeissä tarvittavat Office-ohjelmat oikein ja testien suoritus onnistuu ongelmitta. Suorita koetestit noudattamalla ohjeita. Testissä olevaa tehtävää ei ole pakko suorittaa.
